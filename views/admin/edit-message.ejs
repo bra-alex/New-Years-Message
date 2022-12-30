@@ -1,0 +1,27 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <%- include('../includes/user-messages.ejs') %>
+        <form class="product-form" action="/admin/<% if (editing) { %>edit-message<% } else { %>add-message<% } %>" method="POST">
+            <div class="form-control">
+                <label for="recipient">To</label>
+                <input type="text" name="recipient" id="recipient" value="<%=oldInput.recipient%>" required>
+            </div>
+            <div class="form-control">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" rows="5" required><%=oldInput.message%></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" name="messageId" value="<%= message._id %>">
+            <% } %>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit"><% if (editing) { %>Update Message<% } else { %>Add Message<% } %></button>
+        </form> 
+    </main>
+<%- include('../includes/end.ejs') %>

@@ -6,8 +6,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 
-const messagesRouter = require('./routes/messages.route')
 const adminRouter = require('./routes/admin.route')
+const Admin = require('./models/admin/admin.mongo')
+const messagesRouter = require('./routes/messages.route')
 
 const sessionStore = new MongoDBStore({
     uri: process.env.MONGO_URL,
@@ -38,6 +39,26 @@ app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn
     res.locals.csrfToken = req.csrfToken()
     next()
+})
+
+app.use(async (req, res, next) => {
+    if (!req.session.user) {
+        return next()
+    }
+
+    try {
+        const user = await Admin.findById(req.session.user._id)
+
+        if (!user) {
+            return next()
+        }
+
+        req.user = user
+        next()
+    } catch (e) {
+        console.log(e);
+        next(e)
+    }
 })
 
 app.use(messagesRouter)

@@ -8,7 +8,14 @@ const adminRouter = express.Router()
 adminRouter.get('/login', adminController.getLogin)
 adminRouter.post('/login', adminController.adminLogin)
 
+adminRouter.post('/logout', adminController.logout)
+
 adminRouter.get('/admin', isAuthenticated, adminController.getMessages)
-// adminRouter.get('/message', messagesControlller.httpFindMessage)
+
+adminRouter.get('/admin/add-message', isAuthenticated, adminController.getAddMessage)
+adminRouter.post('/admin/add-message', isAuthenticated, adminController.addNewMessage)
+
+adminRouter.get('/admin/edit-message/:messageId', isAuthenticated, adminController.getEditMessage)
+adminRouter.post('/admin/edit-message/', isAuthenticated, adminController.editMessage)
 
 module.exports = adminRouter
