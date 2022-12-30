@@ -5,8 +5,7 @@
 
 <body>
     <main>
-        <%- include('./includes/user-messages.ejs') %>
-        <form class="login-form" action="/login" method="POST">
+        <form class="login-form" action="/message" method="get">
             <div class="form-control">
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name">
@@ -16,5 +15,6 @@
                 <button class="btn" type="submit">Search</button>
             </div>
         </form>
+        <%- include('./includes/user-messages.ejs') %>
     </main>
 <%- include('./includes/end.ejs') %>

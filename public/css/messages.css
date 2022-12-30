@@ -1,0 +1,18 @@
+.product-form {
+    width: 20rem;
+}
+
+.div,
+.product-form{
+    max-width: 90%;
+    margin: auto;
+    display: block;
+}
+
+.div p{
+    white-space: pre-wrap;
+}
+
+.title {
+    font-size: 1.2rem;
+}

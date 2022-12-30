@@ -41,4 +41,10 @@ app.use((req, res, next) => {
 
 app.use(messagesRouter)
 
+app.use((error, req, res, next) => {
+    res.status(500).json({
+        message: error.message
+    })
+})
+
 module.exports = app
