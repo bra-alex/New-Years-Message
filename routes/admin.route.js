@@ -18,4 +18,6 @@ adminRouter.post('/admin/add-message', isAuthenticated, adminController.addNewMe
 adminRouter.get('/admin/edit-message/:messageId', isAuthenticated, adminController.getEditMessage)
 adminRouter.post('/admin/edit-message/', isAuthenticated, adminController.editMessage)
 
+adminRouter.delete('/admin/message/:messageId', isAuthenticated, adminController.deleteMessage)
+
 module.exports = adminRouter

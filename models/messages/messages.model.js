@@ -52,10 +52,21 @@ async function updateMessage(id, message){
     }
 }
 
+async function deleteMessage(id){
+    try {
+        await Messages.deleteOne({_id: id})
+    } catch (e) {
+        console.log(e)
+        e.message = 'Error deleting message from database'
+        throw e
+    }
+}
+
 module.exports = {
     postMessage,
     findMessage,
     findMessages,
     findMessageById,
-    updateMessage
+    updateMessage,
+    deleteMessage
 }

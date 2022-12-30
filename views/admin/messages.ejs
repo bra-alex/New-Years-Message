@@ -23,8 +23,8 @@
                                 <div class="card__actions">
                                     <a href="/admin/edit-message/<%=message._id%>?edit=true" class="btn">Edit</a>
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" name="messagesId" value="<%= messages._id %>">  
-                                    <button class="btn" type="button" onclick="deleteMessage(this)">Delete</button>
+                                    <input type="hidden" name="messageId" value="<%= message._id %>">  
+                                    <button class="btn" type="button" id="deleteBtn">Delete</button>
                                 </div>
                             </article>
                             <% } %>

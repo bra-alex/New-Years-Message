@@ -141,6 +141,25 @@ async function editMessage(req, res, next) {
     }
 }
 
+async function deleteMessage(req, res, next) {
+    try {
+        const id = req.params.messageId
+
+        await messagesModel.deleteMessage(id)
+
+        res.status(200).json({
+            message: 'Success'
+        })
+
+    } catch (e) {
+        console.log(e)
+
+        res.status(500).json({
+            message: 'Failed'
+        })
+    }
+}
+
 async function logout(req, res) {
     req.session.destroy((err) => {
         if (err) {
@@ -161,5 +180,6 @@ module.exports = {
     adminLogin,
     addNewMessage,
     editMessage,
+    deleteMessage,
     logout
 }

@@ -7,9 +7,18 @@ function getIndex(req, res) {
     })
 }
 
+async function getMessage(req, res) {
+    const recipient = req.params.recipient
+    const message = await messagesModel.findMessage(recipient)
+    res.render('messages/message', {
+        pageTitle: 'New Years Messages',
+        message: message
+    })
+}
+
 async function httpFindMessage(req, res, next) {
     try {
-        const recipient = req.body.name
+        const recipient = req.body.recipient
         const message = await messagesModel.findMessage(recipient)
 
         if(!message) {
@@ -25,19 +34,16 @@ async function httpFindMessage(req, res, next) {
             })
         }
 
-        res.status(200).render('messages/message', {
-            pageTitle: 'New Years Messages',
-            message: message
-        })
+        res.redirect(`/message/${recipient}`)
 
     } catch (e) {
         next(e)
-    }
-    
+    } 
 }
 
 
 module.exports = {
     getIndex,
-    httpFindMessage
+    getMessage,
+    httpFindMessage,
 }
