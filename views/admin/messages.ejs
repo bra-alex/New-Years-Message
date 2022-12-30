@@ -6,38 +6,32 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main>
-                <% if (products.length > 0) { %>
+                <% if (messages.length > 0) { %>
                     <div class="grid">
-                        <% for (let product of products) { %>
+                        <% for (let message of messages) { %>
                             <article class="card product-item">
                                 <header class="card__header">
                                     <h1 class="product__title">
-                                        <%= product.name %>
+                                        <%= message.recipient %>
                                     </h1>
                                 </header>
-                                <div class="card__image">
-                                    <img src="/<%= product.imageURL %>" alt="<%= product.title %>">
-                                </div>
                                 <div class="card__content">
-                                    <h2 class="product__price">
-                                        GH¢ <%= product.price %>
-                                    </h2>
                                     <p class="product__description">
-                                        <%= product.description %>
+                                        <%= message.message %>
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    <a href="/admin/edit-product/<%=product._id%>?edit=true" class="btn">Edit</a>
+                                    <a href="/admin/edit-message/<%=message._id%>?edit=true" class="btn">Edit</a>
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" name="productId" value="<%= product._id %>">  
-                                    <button class="btn" type="button" onclick="deleteProduct(this)">Delete</button>
+                                    <input type="hidden" name="messagesId" value="<%= messages._id %>">  
+                                    <button class="btn" type="button" onclick="deleteMessage(this)">Delete</button>
                                 </div>
                             </article>
                             <% } %>
                     </div>
                     <%- include('../includes/pagination.ejs') %>
                     <% } else { %>
-                        <h1>No Products Found!</h1>
+                        <h1>No Messages Added!</h1>
                     <% } %>
             </main>
             <%- include('../includes/end.ejs') %>

@@ -7,6 +7,7 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 
 const messagesRouter = require('./routes/messages.route')
+const adminRouter = require('./routes/admin.route')
 
 const sessionStore = new MongoDBStore({
     uri: process.env.MONGO_URL,
@@ -40,6 +41,7 @@ app.use((req, res, next) => {
 })
 
 app.use(messagesRouter)
+app.use(adminRouter)
 
 app.use((error, req, res, next) => {
     res.status(500).json({

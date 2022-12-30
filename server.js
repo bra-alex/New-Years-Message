@@ -6,6 +6,7 @@ const https = require('https')
 
 const app = require('./app')
 const mongoConnect = require('./services/mongo')
+const { createAdmin } = require('./controllers/admin.controller')
 
 const options = {
     key: fs.readFileSync('key.pem'),
@@ -14,8 +15,9 @@ const options = {
 
 const httpsServer = https.createServer(options, app)
 
-async function startServer(){
+async function startServer() {
     await mongoConnect()
+    await createAdmin()
     httpsServer.listen(process.env.PORT, () => console.log('Connected on port:', process.env.PORT))
 }
 

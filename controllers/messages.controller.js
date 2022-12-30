@@ -1,4 +1,4 @@
-const messagesModel = require('../models/messages.model')
+const messagesModel = require('../models/messages/messages.model')
 
 function getIndex(req, res) {
     res.status(200).render('index', {
