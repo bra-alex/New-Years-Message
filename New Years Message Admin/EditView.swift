@@ -25,6 +25,7 @@ struct EditView: View {
                 
                 Section("Message") {
                     TextEditor(text: $message)
+                        .frame(height: 300)
                 }
                 
                 Section {
@@ -46,7 +47,7 @@ struct EditView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
+                Button(role: .destructive) {
                     Task {
                         await msgController.deleteMessage(id)
                         dismiss()
@@ -54,6 +55,7 @@ struct EditView: View {
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
+                .buttonStyle(.borderless)
             }
         }
     }
