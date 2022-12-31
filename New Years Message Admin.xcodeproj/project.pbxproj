@@ -20,6 +20,7 @@
 		98A82F9F295FE8ED00AC70CC /* MessagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A82F9E295FE8ED00AC70CC /* MessagesModel.swift */; };
 		98A82FA129604EAC00AC70CC /* AddMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A82FA029604EAC00AC70CC /* AddMessageView.swift */; };
 		98A82FA32960536500AC70CC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A82FA22960536500AC70CC /* LoadingView.swift */; };
+		98A82FA529605E3000AC70CC /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A82FA429605E3000AC70CC /* EditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		98A82F9E295FE8ED00AC70CC /* MessagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesModel.swift; sourceTree = "<group>"; };
 		98A82FA029604EAC00AC70CC /* AddMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMessageView.swift; sourceTree = "<group>"; };
 		98A82FA22960536500AC70CC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		98A82FA429605E3000AC70CC /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				98A82F9C295FE84900AC70CC /* MessagesController.swift */,
 				98A82F9E295FE8ED00AC70CC /* MessagesModel.swift */,
 				98A82F9A295FDB3400AC70CC /* AdminView.swift */,
+				98A82FA429605E3000AC70CC /* EditView.swift */,
 				98A82FA029604EAC00AC70CC /* AddMessageView.swift */,
 				98A82F91295FD21200AC70CC /* AdminModel.xcdatamodeld */,
 				98479AEC295FCFD20078E325 /* Assets.xcassets */,
@@ -166,6 +169,7 @@
 			files = (
 				98479AEB295FCFCF0078E325 /* ContentView.swift in Sources */,
 				98A82F9B295FDB3400AC70CC /* AdminView.swift in Sources */,
+				98A82FA529605E3000AC70CC /* EditView.swift in Sources */,
 				98A82F99295FD4AB00AC70CC /* AuthController.swift in Sources */,
 				98A82FA32960536500AC70CC /* LoadingView.swift in Sources */,
 				98A82F95295FD22700AC70CC /* DataController.swift in Sources */,

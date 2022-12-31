@@ -30,6 +30,7 @@ struct AddMessageView: View {
                         Button("Save") {
                             Task {
                                 await msgController.addMessage()
+                                dismiss()
                             }
                         }
                     }

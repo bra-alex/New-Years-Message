@@ -48,7 +48,47 @@ class MessagesController: ObservableObject{
             self.processing = true
         }
         
-        print(recipient, message)
+        let body = ["recipient": recipient, "message": message]
+        
+        guard let encodedData = try? JSONEncoder().encode(body) else {
+            print("Encoding failed!")
+            return
+        }
+        
+        let url = URL(string: "https://new-years-message.onrender.com/api/v1/admin/add-message")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        
+        do{
+            let (data, response) = try await URLSession.shared.upload(for: request, from: encodedData)
+            let urlResponse = response as! HTTPURLResponse
+            
+            if urlResponse.statusCode == 201{
+                if let decodedData = try? JSONDecoder().decode([String: String].self, from: data){
+                    print(decodedData)
+                    await loadData()
+                    DispatchQueue.main.async {
+                        self.processing = false
+                    }
+                    return
+                }
+            }
+            
+        } catch {
+            DispatchQueue.main.async {
+                print(error.localizedDescription)
+                self.processing = false
+            }
+        }
+    }
+    
+    func updateMessage(_ messageId: String) async {
+        DispatchQueue.main.async {
+            self.processing = true
+        }
         
         let body = ["recipient": recipient, "message": message]
         
@@ -57,23 +97,28 @@ class MessagesController: ObservableObject{
             return
         }
         
-        let url = URL(string: "https://new-years-message.onrender.com/api/v1/add-message")!
+        let url = URL(string: "https://new-years-message.onrender.com/api/v1/admin/edit-message/\(messageId)")!
         
         var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
-        request.httpMethod = "POST"
         
         do{
-            let (data, _) = try await URLSession.shared.upload(for: request, from: encodedData)
+            let (data, response) = try await URLSession.shared.upload(for: request, from: encodedData)
+            let urlResponse = response as! HTTPURLResponse
             
-            let response = try JSONDecoder().decode(Messages.self, from: data)
-            print(data)
-            DispatchQueue.main.async {
-                print(response)
-                self.messages.append(response)
-                self.processing = false
+            if urlResponse.statusCode == 201{
+                if let decodedData = try? JSONDecoder().decode([String: String].self, from: data){
+                    print(decodedData)
+                    await loadData()
+                    DispatchQueue.main.async {
+                        self.processing = false
+                    }
+                    return
+                }
             }
+            
         } catch {
             DispatchQueue.main.async {
                 print(error.localizedDescription)
