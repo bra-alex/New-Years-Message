@@ -71,7 +71,8 @@ app.use(adminRouter)
 
 app.use((error, req, res, next) => {
     res.status(500).json({
-        message: error.message
+        message: error.message,
+        status: error.statusCode
     })
 })
 
