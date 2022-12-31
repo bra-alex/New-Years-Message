@@ -6,8 +6,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 
-const adminRouter = require('./routes/admin.route')
 const Admin = require('./models/admin/admin.mongo')
+const adminRouter = require('./routes/admin.route')
+const apiRouter = require('./api/api')
 const messagesRouter = require('./routes/messages.route')
 
 const sessionStore = new MongoDBStore({
@@ -63,6 +64,7 @@ app.use(async (req, res, next) => {
 
 app.use(messagesRouter)
 app.use(adminRouter)
+app.use('/api', apiRouter)
 
 app.use((error, req, res, next) => {
     res.status(500).json({
