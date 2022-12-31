@@ -27,6 +27,8 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use('/api', apiRouter)
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -64,7 +66,6 @@ app.use(async (req, res, next) => {
 
 app.use(messagesRouter)
 app.use(adminRouter)
-app.use('/api', apiRouter)
 
 app.use((error, req, res, next) => {
     res.status(500).json({

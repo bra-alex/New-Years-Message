@@ -1,20 +1,4 @@
-const messagesModel = require('../models/messages/messages.model')
-
-function getIndex(req, res) {
-    res.status(200).render('index', {
-        pageTitle: 'New Years Messages',
-        errorMessage: undefined
-    })
-}
-
-async function getMessage(req, res) {
-    const recipient = req.params.recipient
-    const message = await messagesModel.findMessage(recipient)
-    res.render('messages/message', {
-        pageTitle: 'New Years Messages',
-        message: message
-    })
-}
+const messagesModel = require('../../../models/messages/messages.model')
 
 async function httpFindMessage(req, res, next) {
     try {
@@ -28,22 +12,16 @@ async function httpFindMessage(req, res, next) {
             I hope that this year, we become closer and enjoy the time we share together.
             I appreciate you and wish you a Happy New Year and may everything you wish for be fulfilled this year. 
             `
-            return res.status(404).render('index', {
-                pageTitle: 'New Years Messages',
-                errorMessage: message
-            })
+            return res.status(200).json({message})
         }
 
-        res.redirect(`/message/${recipient}`)
+        res.status(200).json({message})
 
     } catch (e) {
         next(e)
     } 
 }
 
-
 module.exports = {
-    getIndex,
-    getMessage,
-    httpFindMessage,
+    httpFindMessage
 }

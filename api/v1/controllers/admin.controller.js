@@ -1,61 +1,14 @@
-const adminModel = require('../models/admin/admin.model')
-const messagesModel = require('../models/messages/messages.model')
+require('dotenv').config
+const jwt = require('jsonwebtoken')
 
-function getLogin(req, res) {
-    res.status(200).render('auth/login', {
-        pageTitle: 'New Years Messages',
-        errorMessage: undefined
-    })
-}
+const adminModel = require('../../../models/admin/admin.model')
+const messagesModel = require('../../../models/messages/messages.model')
 
 async function getMessages(req, res, next) {
     try {
         const messages = await messagesModel.findMessages()
 
-        res.status(200).render('admin/messages', {
-            pageTitle: 'New Years Messages',
-            messages
-        })
-    } catch (e) {
-        next(e)
-    }
-}
-
-async function getAddMessage(req, res) {
-    res.status(200).render('admin/edit-message', {
-        pageTitle: 'New Years Messages',
-        oldInput: {
-            recipient: '',
-            message: ''
-        },
-        errorMessage: undefined,
-        editing: false
-    })
-}
-
-async function getEditMessage(req, res, next) {
-    try {
-        const edit = req.query.edit
-        const messageId = req.params.messageId
-
-        const message = await messagesModel.findMessageById(messageId)
-
-        if (!message) {
-            return res.status(404).json({
-                message: 'Could not find message'
-            })
-        }
-
-        res.status(200).render('admin/edit-message', {
-            pageTitle: 'New Years Messages',
-            oldInput: {
-                recipient: message.recipient,
-                message: message.message
-            },
-            errorMessage: undefined,
-            message: message,
-            editing: edit
-        })
+        res.status(200).json({ messages })
     } catch (e) {
         next(e)
     }
@@ -94,23 +47,26 @@ async function adminLogin(req, res, next) {
         const correctPassword = await adminModel.comparePassword(password, user.password)
 
         if (!correctPassword) {
-            return res.status(422).render('auth/login', {
-                pageTitle: 'Login',
-                errorMessage: 'Invalid email or password'
+            return res.status(422).json({
+                error: 'Invalid email or password'
             })
         }
 
-        req.session.user = user
-        req.session.isLoggedIn = true
-
-        req.session.save((err) => {
-            if (err) {
-                return console.error(err);
-            }
-            res.redirect('/admin')
+        const token = jwt.sign({
+            userId: user._id.toString(),
+            email: user.email
+        }, process.env.TOKEN_SECRET, {
+            expiresIn: '48h'
         })
+
+        res.status(200).json({
+            message: 'Logged in successfully',
+            token,
+            userId: user._id.toString()
+        })
+
     } catch (e) {
-        throw e
+        next(e)
     }
 }
 
@@ -121,7 +77,13 @@ async function addNewMessage(req, res, next) {
 
         await messagesModel.postMessage({ recipient, message })
 
-        res.redirect('/admin')
+        res.status(201).json({
+            message: `Message for ${recipient} added successfully`,
+            addedMessage: {
+                recipient,
+                message
+            }
+        })
     } catch (e) {
         next(e)
     }
@@ -131,11 +93,17 @@ async function editMessage(req, res, next) {
     try {
         const recipient = req.body.recipient
         const message = req.body.message
-        const messageId = req.body.messageId
+        const messageId = req.params.messageId
 
         await messagesModel.updateMessage(messageId, { recipient, message })
 
-        res.redirect('/admin')
+        res.status(200).json({
+            message: 'Message updated',
+            updatedMessage: {
+                recipient,
+                message
+            }
+        })
     } catch (e) {
         next(e)
     }
@@ -161,21 +129,14 @@ async function deleteMessage(req, res, next) {
 }
 
 async function logout(req, res) {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error(err);
-
-            errorHandler(e, next)
-        }
-        res.redirect('/login')
+    const token = undefined
+    res.status(200).json({
+        message: 'Logged out'
     })
 }
 
 module.exports = {
-    getLogin,
     getMessages,
-    getAddMessage,
-    getEditMessage,
     createAdmin,
     adminLogin,
     addNewMessage,
