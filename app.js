@@ -38,7 +38,7 @@ app.use(session({
     store: sessionStore
 }))
 
-app.use(csrf())
+// app.use(csrf())
 
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn
