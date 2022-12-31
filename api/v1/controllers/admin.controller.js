@@ -8,7 +8,7 @@ async function getMessages(req, res, next) {
     try {
         const messages = await messagesModel.findMessages()
 
-        res.status(200).json({ messages })
+        res.status(200).json(messages)
     } catch (e) {
         next(e)
     }
@@ -78,11 +78,8 @@ async function addNewMessage(req, res, next) {
         await messagesModel.postMessage({ recipient, message })
 
         res.status(201).json({
-            message: `Message for ${recipient} added successfully`,
-            addedMessage: {
-                recipient,
-                message
-            }
+            recipient,
+            message
         })
     } catch (e) {
         next(e)
@@ -98,11 +95,8 @@ async function editMessage(req, res, next) {
         await messagesModel.updateMessage(messageId, { recipient, message })
 
         res.status(200).json({
-            message: 'Message updated',
-            updatedMessage: {
-                recipient,
-                message
-            }
+            recipient,
+            message
         })
     } catch (e) {
         next(e)
@@ -129,9 +123,17 @@ async function deleteMessage(req, res, next) {
 }
 
 async function logout(req, res) {
-    const token = undefined
-    res.status(200).json({
-        message: 'Logged out'
+    const authHeader = req.headers["authorization"]
+    jwt.sign(authHeader, '', {expiresIn: 1}, (logout, err) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Failed to logout'
+            })
+        }
+
+        res.status(200).json({
+            message: 'Logged out'
+        })
     })
 }
 
