@@ -18,16 +18,13 @@ struct EditView: View {
     
     var body: some View {
         ZStack {
-            if msgController.processing{
-                LoadingView()
-            }
             Form{
                 Section("To") {
                     TextField("Recipient", text: $recipient)
                 }
                 
                 Section("Message") {
-                    TextField("Message", text: $message)
+                    TextEditor(text: $message)
                 }
                 
                 Section {
@@ -42,6 +39,10 @@ struct EditView: View {
             }
             .blur(radius: msgController.processing ? 3 : 0)
             .animation(.default, value: msgController.processing)
+            
+            if msgController.processing{
+                LoadingView()
+            }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

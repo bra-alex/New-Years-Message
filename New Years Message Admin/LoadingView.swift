@@ -13,7 +13,7 @@ struct LoadingView: View {
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
             ProgressView()
-//                .tint(.white)
+                .tint(.white)
         }
     }
 }

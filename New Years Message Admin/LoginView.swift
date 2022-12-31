@@ -56,8 +56,6 @@ struct LoginView: View {
                         try? moc.save()
                     }
                     
-                    print(authController.token)
-                    
                     if !authController.loggedOut {
                         dismiss()
                     }
