@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var tokens: FetchedResults<Authentication>
+    @StateObject var msgController = MessagesController()
+    @StateObject var authController = AuthController()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack{
+            AdminView(msgController: msgController)
         }
-        .padding()
+        .task {
+            msgController.token = tokens.isEmpty ? "" : tokens[0].token!
+            await msgController.loadData()
+            
+            authController.loggedOut = msgController.loggedOut
+        }
+        .fullScreenCover(isPresented: $authController.loggedOut) {
+            LoginView(authController: authController)
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct New_Years_Message_AdminApp: App {
     @StateObject var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
