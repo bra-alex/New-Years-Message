@@ -12,11 +12,11 @@ struct AddMessageView: View {
     @ObservedObject var msgController: MessagesController
     
     var body: some View {
-        ZStack {
-            if msgController.processing{
-                LoadingView()
-            }
-            NavigationView {
+        NavigationView {
+            ZStack {
+                if msgController.processing{
+                    LoadingView()
+                }
                 Form{
                     Section("To") {
                         TextField("Recipient", text: $msgController.recipient)
@@ -35,16 +35,16 @@ struct AddMessageView: View {
                         }
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Cancel", role: .destructive) {
-                            dismiss()
-                        }
+                .blur(radius: msgController.processing ? 3 : 0)
+                .animation(.default, value: msgController.processing)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel", role: .destructive) {
+                        dismiss()
                     }
                 }
             }
-            .blur(radius: msgController.processing ? 3 : 0)
-            .animation(.default, value: msgController.processing)
         }
     }
 }

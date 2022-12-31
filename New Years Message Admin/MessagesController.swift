@@ -67,8 +67,7 @@ class MessagesController: ObservableObject{
             let urlResponse = response as! HTTPURLResponse
             
             if urlResponse.statusCode == 201{
-                if let decodedData = try? JSONDecoder().decode([String: String].self, from: data){
-                    print(decodedData)
+                if let _ = try? JSONDecoder().decode([String: String].self, from: data){
                     await loadData()
                     DispatchQueue.main.async {
                         self.processing = false
@@ -100,7 +99,7 @@ class MessagesController: ObservableObject{
         let url = URL(string: "https://new-years-message.onrender.com/api/v1/admin/edit-message/\(messageId)")!
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
         
@@ -108,9 +107,8 @@ class MessagesController: ObservableObject{
             let (data, response) = try await URLSession.shared.upload(for: request, from: encodedData)
             let urlResponse = response as! HTTPURLResponse
             
-            if urlResponse.statusCode == 201{
-                if let decodedData = try? JSONDecoder().decode([String: String].self, from: data){
-                    print(decodedData)
+            if urlResponse.statusCode == 200{
+                if let _ = try? JSONDecoder().decode([String: String].self, from: data){
                     await loadData()
                     DispatchQueue.main.async {
                         self.processing = false
@@ -118,7 +116,39 @@ class MessagesController: ObservableObject{
                     return
                 }
             }
+        } catch {
+            DispatchQueue.main.async {
+                print(error.localizedDescription)
+                self.processing = false
+            }
+        }
+    }
+    
+    func deleteMessage(_ messageId: String) async {
+        DispatchQueue.main.async {
+            self.processing = true
+        }
+        
+        let url = URL(string: "https://new-years-message.onrender.com/api/v1/admin/message/\(messageId)")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "Delete"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        
+        do{
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let urlResponse = response as! HTTPURLResponse
             
+            if urlResponse.statusCode == 200{
+                if let _ = try? JSONDecoder().decode([String: String].self, from: data){
+                    await loadData()
+                    DispatchQueue.main.async {
+                        self.processing = false
+                    }
+                    return
+                }
+            }
         } catch {
             DispatchQueue.main.async {
                 print(error.localizedDescription)

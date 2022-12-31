@@ -8,13 +8,58 @@
 import SwiftUI
 
 struct EditView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    @State var id: String
+    @State var recipient: String
+    @State var message: String
+    
+    @ObservedObject var msgController: MessagesController
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            if msgController.processing{
+                LoadingView()
+            }
+            Form{
+                Section("To") {
+                    TextField("Recipient", text: $recipient)
+                }
+                
+                Section("Message") {
+                    TextField("Message", text: $message)
+                }
+                
+                Section {
+                    Button("Save") {
+                        Task {
+                            msgController.recipient = recipient
+                            msgController.message = message
+                            await msgController.updateMessage(id)
+                        }
+                    }
+                }
+            }
+            .blur(radius: msgController.processing ? 3 : 0)
+            .animation(.default, value: msgController.processing)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    Task {
+                        await msgController.deleteMessage(id)
+                        dismiss()
+                    }
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
     }
 }
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        EditView()
+        EditView(id: "", recipient: "", message: "", msgController: MessagesController())
     }
 }

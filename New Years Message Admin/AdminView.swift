@@ -16,7 +16,7 @@ struct AdminView: View {
         List{
             ForEach(msgController.messages) { msg in
                 NavigationLink {
-                    
+                    EditView(id: msg.id, recipient: msg.recipient, message: msg.message, msgController: msgController)
                 } label: {
                     Text(msg.recipient)
                 }
