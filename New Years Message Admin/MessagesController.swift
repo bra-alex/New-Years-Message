@@ -48,7 +48,7 @@ class MessagesController: ObservableObject{
             self.processing = true
         }
         
-        let body = ["recipient": recipient, "message": message]
+        let body = ["recipient": recipient.trimmingCharacters(in: .whitespacesAndNewlines), "message": message]
         
         guard let encodedData = try? JSONEncoder().encode(body) else {
             print("Encoding failed!")
@@ -71,6 +71,8 @@ class MessagesController: ObservableObject{
                     await loadData()
                     DispatchQueue.main.async {
                         self.processing = false
+                        self.recipient = ""
+                        self.message = ""
                     }
                     return
                 }
@@ -89,7 +91,7 @@ class MessagesController: ObservableObject{
             self.processing = true
         }
         
-        let body = ["recipient": recipient, "message": message]
+        let body = ["recipient": recipient.trimmingCharacters(in: .whitespacesAndNewlines), "message": message]
         
         guard let encodedData = try? JSONEncoder().encode(body) else {
             print("Encoding failed!")
@@ -112,6 +114,8 @@ class MessagesController: ObservableObject{
                     await loadData()
                     DispatchQueue.main.async {
                         self.processing = false
+                        self.recipient = ""
+                        self.message = ""
                     }
                     return
                 }
