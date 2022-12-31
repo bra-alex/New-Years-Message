@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const path = require('path')
 const csrf = require('csurf')
 const helmet = require('helmet')
@@ -6,9 +8,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 
+const apiRouter = require('./api/api')
 const Admin = require('./models/admin/admin.mongo')
 const adminRouter = require('./routes/admin.route')
-const apiRouter = require('./api/api')
 const messagesRouter = require('./routes/messages.route')
 
 const sessionStore = new MongoDBStore({
