@@ -14,16 +14,13 @@ struct AddMessageView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                if msgController.processing{
-                    LoadingView()
-                }
                 Form{
                     Section("To") {
                         TextField("Recipient", text: $msgController.recipient)
                     }
                     
                     Section("Message") {
-                        TextField("Message", text: $msgController.message)
+                        TextEditor(text: $msgController.message)
                     }
                     
                     Section {
@@ -37,6 +34,10 @@ struct AddMessageView: View {
                 }
                 .blur(radius: msgController.processing ? 3 : 0)
                 .animation(.default, value: msgController.processing)
+                
+                if msgController.processing{
+                    LoadingView()
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

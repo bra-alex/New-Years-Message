@@ -41,9 +41,7 @@ class AuthController: ObservableObject{
             
             let response = try JSONDecoder().decode([String: String].self, from: data)
             DispatchQueue.main.async {
-                print(response)
                 self.token = response["token"]!
-                print(self.token)
                 
                 self.loggedOut = false
                 self.processing = false
