@@ -1,0 +1,20 @@
+<%- include('./includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+    <main>
+        <form class="login-form" action="/" method="POST">
+            <div class="form-control">
+                <label for="recipient">Name</label>
+                <input type="text" name="recipient" id="recipient">
+            </div>
+            <div class="centered">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn" type="submit">Search</button>
+            </div>
+        </form>
+        <%- include('./includes/user-messages.ejs') %>
+    </main>
+<%- include('./includes/end.ejs') %>
